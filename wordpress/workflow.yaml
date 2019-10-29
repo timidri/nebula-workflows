@@ -1,0 +1,41 @@
+version: v1
+description: Workflow to echo a nice hello world message to the logs
+
+steps:
+  - name: echo
+    image: alpine:latest
+    input:
+      - echo "Hello world. I am $(whoami)"
+- name: deploy-wordpress-db
+  image: projectnebula/cloudformation-deployer:latest
+  spec:
+    aws:
+      accessKeyID:
+        $type: Secret
+        name: key-id 
+      secretAccessKey:
+        $type: Secret
+        name: access-key
+      region: eu-west-2  
+    stackName: wordpress-db 
+    templateFile: wordpress/cf.yaml
+    git: 
+      ssh_key:
+        $type: Secret
+        name: ssh_key
+      known_hosts:
+        $type: Secret
+        name: known_hosts
+      name: my-git-repo
+      branch: dev
+      repository: path/to/your/repo
+    parameters: 
+      Environment: production
+      CertificateARN: arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012
+    s3:
+      bucket: my-bucket
+      prefix: app   
+    capabilities:
+      - CAPABILITY_NAMED_IAM
+    tags:
+      lifetime: 4d

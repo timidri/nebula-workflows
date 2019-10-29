@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Template deploying a managed MySQL database
+# Metadata:
+
+# Parameters:
+
+# Mappings:
+
+# Conditions:
+
+Resources:
+  WordpressVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.111.0.0/16
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: WordpressVpc
+  WordpressInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: wordpress-ig
+  WordpressInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref WordpressVpc
+      InternetGatewayId: !Ref WordpressInternetGateway
+  WordpressSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: eu-west-2a
+      VpcId: !Ref WordpressVpc
+      CidrBlock: 10.111.0.0/24
+      Tags:
+        - Key: Name
+          Value: wordpress-subnet-1
+  WordpressSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: eu-west-2b
+      VpcId: !Ref WordpressVpc
+      CidrBlock: 10.111.1.0/24
+      Tags:
+        - Key: Name
+          Value: wordpress-subnet-2
+  WordpressSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet Group for the Wordpress db
+      SubnetIds:
+        - Ref: WordpressSubnet1
+        - Ref: WordpressSubnet2
+      Tags:
+        - Key: Name
+          Value: wordpress-subnetgroup
+  WordpressSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: wordpress-sg
+      GroupDescription: Security group for Wordpress db
+      VpcId: !Ref WordpressVpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 3306
+          ToPort: 3306
+      Tags:
+        - Key: Name
+          Value: wordpress-sg
+  WordpressDatabase:
+    Type: AWS::RDS::DBInstance
+    DependsOn: WordpressInternetGatewayAttachment
+    Properties:
+      AllocatedStorage: 20
+      DBInstanceClass: db.t2.micro
+      # AvailabilityZone: eu-west-2a
+      DBInstanceIdentifier: wordpress-db
+      DBName: wordpress
+      DBSubnetGroupName: !Ref WordpressSubnetGroup
+      Engine: mysql
+      MasterUsername: wordpress
+      MasterUserPassword: w0rdpre55
+      MultiAZ: false
+      PubliclyAccessible: true
+      StorageType: gp2
+      DeletionProtection: false
+      VPCSecurityGroups:
+        - Ref WordpressSecurityGroup
+      Tags:
+        - Key: Name
+          Value: wordpress-db
+Outputs:
+  DBHost:
+    Description: Database Host
+    Value: !GetAtt WordpressDatabase.Endpoint.Address
+  DBPort:
+    Description: Database Port
+    Value: !GetAtt WordpressDatabase.Endpoint.Port
