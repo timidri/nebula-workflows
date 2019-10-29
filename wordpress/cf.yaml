@@ -88,7 +88,8 @@ Resources:
       PubliclyAccessible: true
       StorageType: gp2
       DeletionProtection: false
-      VPCSecurityGroups: !Ref WordpressSecurityGroup
+      VPCSecurityGroups:
+        - !Ref WordpressSecurityGroup
       Tags:
         - Key: Name
           Value: wordpress-db
