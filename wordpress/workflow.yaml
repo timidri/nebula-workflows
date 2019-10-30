@@ -7,35 +7,30 @@ parameters:
     default: wordpressdb
 
 steps:
-  - name: echo
-    image: alpine:latest
-    input:
-      - echo "Hello world. I am $(whoami)"
-  - name: deploy-wordpress-db
-    image: projectnebula/cloudformation-deployer:latest
+  - name: slack-notification
+    image: projectnebula/slack-notification:latest
     spec:
-      aws:
-        accessKeyID:
-          $type: Secret
-          name: key-id
-        secretAccessKey:
-          $type: Secret
-          name: access-key
-        region: eu-west-2
-      stackName:
-        $type: Parameter
-        name: stack_name
-      templateFile: wordpress/cf.yaml
-      git:
-        name: nebula-workflows
-        repository: https://github.com/timidri/nebula-workflows.git
-      # # # # parameters:
-      # # # #   Environment: production
-      # # # #   CertificateARN: arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012
-      # # # s3:
-      # # #   bucket: my-bucket
-      # # #   prefix: app
-      # # capabilities:
-      # #   - CAPABILITY_NAMED_IAM
-      # tags:
-      #   lifetime: 4d
+      apitoken:
+        $type: Secret
+        name: slack-token
+      channel: "#nebula-workflows"
+      message: "Testing slack notifications by DbT."
+      username: me
+  # - name: deploy-wordpress-db
+  #   image: projectnebula/cloudformation-deployer:latest
+  #   spec:
+  #     aws:
+  #       accessKeyID:
+  #         $type: Secret
+  #         name: key-id
+  #       secretAccessKey:
+  #         $type: Secret
+  #         name: access-key
+  #       region: eu-west-2
+  #     stackName:
+  #       $type: Parameter
+  #       name: stack_name
+  #     templateFile: wordpress/cf.yaml
+  #     git:
+  #       name: nebula-workflows
+  #       repository: https://github.com/timidri/nebula-workflows.git
