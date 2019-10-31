@@ -16,21 +16,21 @@ steps:
       channel: "#nebula-workflows"
       message: "Testing slack notifications by DbT."
       username: me
-  # - name: deploy-wordpress-db
-  #   image: projectnebula/cloudformation-deployer:latest
-  #   spec:
-  #     aws:
-  #       accessKeyID:
-  #         $type: Secret
-  #         name: key-id
-  #       secretAccessKey:
-  #         $type: Secret
-  #         name: access-key
-  #       region: eu-west-2
-  #     stackName:
-  #       $type: Parameter
-  #       name: stack_name
-  #     templateFile: wordpress/cf.yaml
-  #     git:
-  #       name: nebula-workflows
-  #       repository: https://github.com/timidri/nebula-workflows.git
+  - name: deploy-wordpress-db
+    image: timidri/cloudformation-deployer:latest
+    spec:
+      aws:
+        accessKeyID:
+          $type: Secret
+          name: key-id
+        secretAccessKey:
+          $type: Secret
+          name: access-key
+        region: eu-west-2
+      stackName:
+        $type: Parameter
+        name: stack_name
+      templateFile: wordpress/cf.yaml
+      git:
+        name: nebula-workflows
+        repository: https://github.com/timidri/nebula-workflows.git
