@@ -50,7 +50,7 @@ steps:
       name: wordpress
       values:
         wordpressBlogName: wordpress
-        mariadb.enabled: "false"
+        mariadb.enabled: false
         externalDatabase.database:
           $type: Output
           name: DBName
