@@ -48,7 +48,6 @@ steps:
     image: projectnebula/helm-deployer:latest
     spec:
       name: wordpress
-      # credentials:
       values:
         wordpressBlogName: wordpress
         mariadb.enabled: "false"
@@ -70,16 +69,16 @@ steps:
           taskName: deploy-wordpress-db
         wordpressSkipInstall: "true"
       chart: stable/wordpress
-    namespace: wordpress
-    recreatePods: true
-    cluster:
-      name: gke_pipelines-for-containers_europe-west1-b_puppet-pipelines
-      url:
-        $type: Secret
-        name: kube-url
-      cadata:
-        $type: Secret
-        name: kube-cadata
-      token:
-        $type: Secret
-        name: kube-token
+      namespace: wordpress
+      recreatePods: true
+      cluster:
+        name: gke_pipelines-for-containers_europe-west1-b_puppet-pipelines
+        url:
+          $type: Secret
+          name: kube-url
+        cadata:
+          $type: Secret
+          name: kube-cadata
+        token:
+          $type: Secret
+          name: kube-token
