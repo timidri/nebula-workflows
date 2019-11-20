@@ -67,7 +67,7 @@ steps:
           $type: Output
           name: DBHostPort
           taskName: deploy-wordpress-db
-        wordpressSkipInstall: "true"
+        wordpressSkipInstall: true
       chart: stable/wordpress
       namespace: wordpress
       recreatePods: true
