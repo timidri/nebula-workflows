@@ -41,6 +41,7 @@ steps:
         DBPassword:
           $type: Parameter
           name: database_password
+      git:
         name: nebula-workflows
         repository: https://github.com/timidri/nebula-workflows.git
   - name: deploy-wordpress-app
