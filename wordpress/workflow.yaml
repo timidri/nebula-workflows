@@ -52,17 +52,14 @@ steps:
         wordpressBlogName: wordpress
         mariadb.enabled: false
         externalDatabase.database:
-          $type: Output
-          name: DBName
-          taskName: deploy-wordpress-db
+          $type: Parameter
+          name: database_name
         externalDatabase.user:
-          $type: Output
-          name: DBUser
-          taskName: deploy-wordpress-db
+          $type: Parameter
+          name: database_user
         externalDatabase.password:
-          $type: Output
-          name: DBPassword
-          taskName: deploy-wordpress-db
+          $type: Parameter
+          name: database_password
         externalDatabase.host:
           $type: Output
           name: DBHostPort
