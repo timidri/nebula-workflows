@@ -100,3 +100,15 @@ Outputs:
   DBPort:
     Description: Database Port
     Value: !GetAtt WordpressDatabase.Endpoint.Port
+  DBHostPort:
+    Description: Database Host and Port
+    Value: !Sub "${WordpressDatabase.Endpoint.Address}:${WordpressDatabase.Endpoint.Port}"
+  DBName:
+    Description: Database name
+    Value: !GetAtt WordpressDatabase.DBName
+  DBUser:
+    Description: Database user
+    Value: !GetAtt WordpressDatabase.MasterUsername
+  DBPassword:
+    Description: Database password
+    Value: !GetAtt WordpressDatabase.MasterUserPassword
