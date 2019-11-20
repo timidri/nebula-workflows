@@ -5,6 +5,15 @@ parameters:
   stack_name:
     description: CloudFormation stack name for wordpress db
     default: wordpressdb
+  database_name:
+    description: name for wordpress db
+    default: wordpress
+  database_user:
+    description: user name for wordpress db
+    default: wordpress
+  database_password:
+    description: password for wordpress db
+    default: w0rdpre55
 
 steps:
   - name: deploy-wordpress-db
@@ -22,7 +31,16 @@ steps:
         $type: Parameter
         name: stack_name
       templateFile: wordpress/cf.yaml
-      git:
+      parameters:
+        DBName:
+          $type: Parameter
+          name: database_name
+        DBUser:
+          $type: Parameter
+          name: database_user
+        DBPassword:
+          $type: Parameter
+          name: database_password
         name: nebula-workflows
         repository: https://github.com/timidri/nebula-workflows.git
   - name: deploy-wordpress-app

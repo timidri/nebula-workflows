@@ -2,7 +2,13 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Template deploying a managed MySQL database
 # Metadata:
 
-# Parameters:
+Parameters:
+  DBName:
+    Type: String
+  DBUser:
+    Type: String
+  DBPassword:
+    Type: String
 
 # Mappings:
 
@@ -79,11 +85,11 @@ Resources:
       DBInstanceClass: db.t2.micro
       # AvailabilityZone: eu-west-2a
       DBInstanceIdentifier: wordpress-db
-      DBName: wordpress
+      DBName: !Ref DBName
       DBSubnetGroupName: !Ref WordpressSubnetGroup
       Engine: mysql
-      MasterUsername: wordpress
-      MasterUserPassword: w0rdpre55
+      MasterUsername: !Ref DBUser
+      MasterUserPassword: !Ref DBPassword
       MultiAZ: false
       PubliclyAccessible: true
       StorageType: gp2
@@ -103,12 +109,3 @@ Outputs:
   DBHostPort:
     Description: Database Host and Port
     Value: !Sub "${WordpressDatabase.Endpoint.Address}:${WordpressDatabase.Endpoint.Port}"
-  DBName:
-    Description: Database name
-    Value: !GetAtt WordpressDatabase.DBName
-  DBUser:
-    Description: Database user
-    Value: !GetAtt WordpressDatabase.MasterUsername
-  DBPassword:
-    Description: Database password
-    Value: !GetAtt WordpressDatabase.MasterUserPassword
