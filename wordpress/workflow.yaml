@@ -45,6 +45,7 @@ steps:
       git:
         name: nebula-workflows
         repository: https://github.com/timidri/nebula-workflows.git
+
   - name: deploy-wordpress-app
     image: projectnebula/helm-deployer:latest
     dependsOn:
@@ -79,6 +80,27 @@ steps:
       recreatePods: true
       cluster:
         name: gke_pipelines-for-containers_europe-west1-b_puppet-pipelines
+        url:
+          $type: Secret
+          name: kube-url
+        cadata:
+          $type: Secret
+          name: kube-cadata
+        token:
+          $type: Secret
+          name: kube-token
+
+  - name: show wordpress IP
+    image: projectnebula/kubectl:latest
+    dependsOn:
+      - deploy-wordpress-app
+    spec:
+      command: get
+      args:
+        - "svc"
+      namespace: wordpress
+      cluster:
+        name: mgke_pipelines-for-containers_europe-west1-b_puppet-pipelines
         url:
           $type: Secret
           name: kube-url
