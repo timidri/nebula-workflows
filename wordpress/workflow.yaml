@@ -68,7 +68,7 @@ steps:
           host:
             $type: Output
             name: DBHostPort
-          taskName: deploy-wordpress-db
+            taskName: deploy-wordpress-db
         wordpressSkipInstall: true
       chart: stable/wordpress
       namespace: wordpress
