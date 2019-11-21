@@ -44,7 +44,7 @@ Resources:
 
   WordpressRoute:
     Type: AWS::EC2::Route
-    DependsOn: WordpressInternetGateway
+    DependsOn: WordpressInternetGatewayAttachment
     Properties:
       RouteTableId: !Ref WordpressRouteTable
       DestinationCidrBlock: 0.0.0.0/0
@@ -69,6 +69,18 @@ Resources:
       Tags:
         - Key: Name
           Value: wordpress-subnet-2
+
+  Subnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref WordpressRouteTable
+      SubnetId: !Ref WordpressSubnet1
+
+  Subnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref WordpressRouteTable
+      SubnetId: !Ref WordpressSubnet2
 
   WordpressSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
