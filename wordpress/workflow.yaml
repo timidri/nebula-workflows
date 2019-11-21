@@ -95,9 +95,9 @@ steps:
     dependsOn:
       - deploy-wordpress-app
     spec:
-      command: get
-      args:
-        - "service"
+      command: get svc
+      # args:
+      #   - "service"
       namespace: wordpress
       cluster:
         name: mgke_pipelines-for-containers_europe-west1-b_puppet-pipelines
