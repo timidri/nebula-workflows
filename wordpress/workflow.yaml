@@ -67,7 +67,11 @@ steps:
             name: database_password
           host:
             $type: Output
-            name: DBHostPort
+            name: DBHost
+            taskName: deploy-wordpress-db
+          port:
+            $type: Output
+            name: DBPort
             taskName: deploy-wordpress-db
         wordpressSkipInstall: true
       chart: stable/wordpress

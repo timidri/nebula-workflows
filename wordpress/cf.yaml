@@ -24,6 +24,7 @@ Resources:
       Tags:
         - Key: Name
           Value: WordpressVpc
+
   WordpressInternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
