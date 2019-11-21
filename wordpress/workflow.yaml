@@ -1,5 +1,5 @@
 version: v1
-description: Workflow to echo a nice hello world message to the logs
+description: This workflow deploys a mysql instance in AWS RDS and a wordpress app into k8s using helm.
 
 parameters:
   stack_name:
@@ -96,8 +96,6 @@ steps:
       - deploy-wordpress-app
     spec:
       command: get svc
-      # args:
-      #   - "service"
       namespace: wordpress
       cluster:
         name: mgke_pipelines-for-containers_europe-west1-b_puppet-pipelines
