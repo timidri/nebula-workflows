@@ -17,7 +17,8 @@ parameters:
 
 steps:
   - name: deploy-wordpress-db
-    image: timidri/cloudformation-deployer:latest
+    # image: timidri/cloudformation-deployer:latest
+    image: projectnebula/cloudformation-deployer:latest
     spec:
       aws:
         accessKeyID:
