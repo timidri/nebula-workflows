@@ -30,11 +30,26 @@ Resources:
       Tags:
         - Key: Name
           Value: wordpress-ig
+
   WordpressInternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref WordpressVpc
       InternetGatewayId: !Ref WordpressInternetGateway
+
+  WordpressRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref WordpressVpc
+
+  WordpressRoute:
+    Type: AWS::EC2::Route
+    DependsOn: WordpressInternetGateway
+    Properties:
+      RouteTableId: !Ref WordpressRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref WordpressInternetGateway
+
   WordpressSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -44,6 +59,7 @@ Resources:
       Tags:
         - Key: Name
           Value: wordpress-subnet-1
+
   WordpressSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -53,6 +69,7 @@ Resources:
       Tags:
         - Key: Name
           Value: wordpress-subnet-2
+
   WordpressSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -63,6 +80,7 @@ Resources:
       Tags:
         - Key: Name
           Value: wordpress-subnetgroup
+
   WordpressSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -77,6 +95,7 @@ Resources:
       Tags:
         - Key: Name
           Value: wordpress-sg
+
   WordpressDatabase:
     Type: AWS::RDS::DBInstance
     DependsOn: WordpressInternetGatewayAttachment
