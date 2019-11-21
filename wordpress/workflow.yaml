@@ -46,23 +46,27 @@ steps:
         repository: https://github.com/timidri/nebula-workflows.git
   - name: deploy-wordpress-app
     image: projectnebula/helm-deployer:latest
+    dependsOn:
+      - deploy-wordpress-db
     spec:
       name: wordpress
       values:
         wordpressBlogName: wordpress
-        mariadb.enabled: false
-        externalDatabase.database:
-          $type: Parameter
-          name: database_name
-        externalDatabase.user:
-          $type: Parameter
-          name: database_user
-        externalDatabase.password:
-          $type: Parameter
-          name: database_password
-        externalDatabase.host:
-          $type: Output
-          name: DBHostPort
+        mariadb:
+          enabled: false
+        externalDatabase:
+          database:
+            $type: Parameter
+            name: database_name
+          user:
+            $type: Parameter
+            name: database_user
+          password:
+            $type: Parameter
+            name: database_password
+          host:
+            $type: Output
+            name: DBHostPort
           taskName: deploy-wordpress-db
         wordpressSkipInstall: true
       chart: stable/wordpress
