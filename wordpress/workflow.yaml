@@ -90,14 +90,14 @@ steps:
           $type: Secret
           name: kube-token
 
-  - name: show wordpress IP
+  - name: show-wordpress-IP
     image: projectnebula/kubectl:latest
     dependsOn:
       - deploy-wordpress-app
     spec:
       command: get
       args:
-        - "svc"
+        - "service"
       namespace: wordpress
       cluster:
         name: mgke_pipelines-for-containers_europe-west1-b_puppet-pipelines
